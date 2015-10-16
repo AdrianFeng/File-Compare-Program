@@ -1,0 +1,79 @@
+CS 35L   Lab3.txt Zhen Feng 
+
+1. a.$ wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+    
+      use this to download the coreutils
+    
+   b. $tar -xzvf coreutils-7.6.tar.gz 
+      use this command to unzip the coreutils into current directory
+
+2.a. $mkdir ./core_test 
+    
+    create a directory under the current direcctory
+
+  b. $pwd 
+   
+    show current directory which is /u/ee/ugrad/zfeng/assignment3
+
+   c  $./configure --prefix=/u/ee/ugrad/zfeng/assignment3/core_test
+   
+     use this command to configure the environment and make the directory 
+     above the directory where program will run.
+    
+    d. $make
+    
+      use "make" to actually complile the code
+    e. $make install
+   
+       after the make and we run the option "install" to actually install the 
+	program
+3. a. $cd /u/ee/ugrad/zfeng/assignment3/core_test/bin/
+    go to the directory that includes the files which are just installed
+   b. $./ls -l
+   it will shows the current files information 
+    for example 
+   " -rwxr-xr-x 1 zfeng eeugrad  90245 2015-04-17 17:46 basename" 
+    this just shows the format which is not wanted
+
+4. apply the brady's approach 
+
+      the difference are 
+ ----------------------------------------
+diff --git a/src/ls.c b/src/ls.c
+index 1bb6873..4531b94 100644
+--- a/src/ls.c
++++ b/src/ls.c
+@@ -2014,7 +2014,6 @@ decode_switches (int argc, char **argv)
+             break;
+
+......
+
+
+-                    long_time_format[i] = locale_format;
+-                  }
++                  long_time_format[i] =
++                    dcgettext (NULL, long_time_format[i], LC_TIME);
+               }
+           }
+
+---------------------------------------------
+
+
+ then we use this to make a patch_file under the current directory
+
+ $patch -p1 < patch_file
+  use this command to apply the patch_file to modify the files
+ $ make
+ $ make install
+
+   compile and install program again
+
+ $./ls -l
+
+ use this to see if the change has been applied 
+
+ we see the correct format has been shown
+
+  for example
+ 
+   "-rwxr-xr-x 1 zfeng eeugrad  90245 Apr 17 2015 18:53 basename"

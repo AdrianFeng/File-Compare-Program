@@ -1,0 +1,62 @@
+CS 35L hw3.txt Zhen Feng UID:904499798
+Q1. 
+-----------------------------------------------
+for (i = 0; i < 2; i++)
+-                  {
+-                    char const *locale_format =
+-                      dcgettext (NULL, long_time_format[i], LC_TIME);
+-                    if (locale_format == long_time_format[i])
+-                      goto case_long_iso_time_style;
+-                    long_time_format[i] = locale_format;
+-                  }
++                  long_time_format[i] =
++                    dcgettext (NULL, long_time_format[i], LC_TIME);
+               }
+------------------------------------------------------
+   It is necessary.
+   We can see that before  brady's approach, when the function dcgettext
+ can not translate then it will return long_time_format[i] and then it will
+automatically go to long_iso_time_style and that is the reason why we have
+the format which is not wanted
+   By just deleting the "goto case_long_iso_time_style", the function will not
+go to long_iso_time_style when the function is in default. Then problem is 
+solved.
+
+Q2. Probably it is just like the question indicates. Since the format is set to
+ "Apr  17  2015", therefore if people don't know English at all, then they
+ will not understand the meaning of "Apr". Therefore, problems will be 
+ that poeple who don't know English can not understand the English-format
+dates. 
+
+Q3. $./randline.py /dev/null
+
+     run the randline.py and give argument /dev/null
+      the output shows a runtime error, which is 
+---------------------------------------------------     
+   " Traceback (most recent call last):
+  File "./randline.py", line 70, in <module>
+    main()
+  File "./randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "./randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.6/random.py", line 261, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is 
+    empty
+    IndexError: list index out of range"
+---------------------------------------------------
+    the reason is because that the input argument is null, which includes
+     nothing. Therefore the list doesn't have any element, so the program 
+    runs with an error and output the "list index out of range" 
+
+Q4.  modify the randline.py to run under python3
+
+    the ouput error is 
+----------------------------------------------
+   " File "./randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+    SyntaxError: invalid syntax"
+-----------------------------------------------
+     This shows that there is an syntax error and it is because that the syntax
+   between python2 and python 3 is different to some content.
